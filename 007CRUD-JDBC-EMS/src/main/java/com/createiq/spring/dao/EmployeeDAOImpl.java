@@ -19,23 +19,22 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	private DataSource dataSource;
 
 	public void add(Employee employee) {
-		
+
 		Connection connection = null;
 		PreparedStatement statement = null;
-		
+
 		try {
 			connection = dataSource.getConnection();
 			statement = connection.prepareStatement("INSERT INTO EMPLOYEE(eid,ename,esal) VALUES(?,?,?)");
 			statement.setInt(1, employee.getEid());
 			statement.setString(2, employee.getEname());
 			statement.setDouble(3, employee.getEsal());
-			
+
 			statement.executeUpdate();
-			
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				statement.close();
 				connection.close();
@@ -47,11 +46,51 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	public void update(Employee employee) {
+		Connection connection = null;
+		PreparedStatement statement = null;
 
+		try {
+			connection = dataSource.getConnection();
+			statement = connection.prepareStatement("UPDATE EMPLOYEE SET ENAME = ? ,ESAL = ? WHERE EID = ?");
+			statement.setInt(3, employee.getEid());
+			statement.setString(1, employee.getEname());
+			statement.setDouble(2, employee.getEsal());
+
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void delete(Integer eid) {
+		Connection connection = null;
+		PreparedStatement statement = null;
 
+		try {
+			connection = dataSource.getConnection();
+			statement = connection.prepareStatement("DELETE FROM EMPLOYEE WHERE EID = ?");
+			statement.setInt(1, eid);
+
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public Employee findById(Integer eid) {
