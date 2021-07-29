@@ -25,6 +25,4 @@
 		class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg ref="basicDataSource"></constructor-arg>
 	</bean>
-
-
 </beans>
