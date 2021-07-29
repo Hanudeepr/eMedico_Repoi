@@ -1,7 +1,5 @@
 package com.createiq.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +7,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.createiq.model.Employee;
+import com.createiq.model.NameSalBean;
 
 @Repository("empDAO")
 public class EmployeeDAOImpl implements EmployeeDAO {
@@ -48,10 +46,28 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return jdbcTemplate.queryForObject("SELECT AVG(esal) FROM EMPLOYEE", Double.class);
 	}
 
-	public List<Map<String, Double>> nameSalMap() {
+	public List<Map<String, Double>> nameSalListMap() {
 		return jdbcTemplate.query("SELECT ENAME,ESAL FROM EMPLOYEE", (rs, num) -> {
 			Map<String, Double> map = new HashMap<String, Double>();
 			map.put(rs.getString(1), rs.getDouble(2));
+			return map;
+		});
+	}
+
+	public List<NameSalBean> nameSalWithNameSalBean() {
+		return jdbcTemplate.query("SELECT ENAME,ESAL FROM EMPLOYEE", (rs, num) -> {
+			NameSalBean nameSalBean = new NameSalBean();
+			nameSalBean.setName(rs.getString(1));
+			nameSalBean.setSal(rs.getDouble(2));
+			return nameSalBean;
+		});
+	}
+
+	public List<Map> nameSalMap() {
+		return jdbcTemplate.query("SELECT ENAME,ESAL FROM EMPLOYEE", (rs,num)->{
+			Map map = new HashMap<>();
+			map.put(rs.getMetaData().getColumnName(1), rs.getObject(1));
+			map.put(rs.getMetaData().getColumnName(2), rs.getObject(2));
 			return map;
 		});
 	}

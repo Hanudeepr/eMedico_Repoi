@@ -21,6 +21,6 @@ public interface EmployeeDAO {
 	
 	Double avgSal();
 	
-	List<Map<String, Double>>  nameSalMap();
+	List<Map>  nameSalMap();
 
 }
