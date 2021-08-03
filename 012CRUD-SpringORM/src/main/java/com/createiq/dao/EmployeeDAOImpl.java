@@ -22,28 +22,27 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Override
 	public void update(Employee employee) {
-		// TODO Auto-generated method stub
-		
+		hibernateTemplate.update(employee);
+
 	}
 
 	@Override
 	public void delete(Integer eid) {
-		// TODO Auto-generated method stub
-		
+		Employee employee = new Employee();
+		employee.setEid(eid);
+		hibernateTemplate.delete(employee);
 	}
 
 	@Override
 	public Employee findByID(Integer eid) {
-		// TODO Auto-generated method stub
-		return null;
+		return hibernateTemplate.get(Employee.class, eid);
 	}
 
 	@Override
 	public List<Employee> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return hibernateTemplate.loadAll(Employee.class);
+		// return hibernateTemplate.getSessionFactory().openSession().createQuery("from
+		// Employee").list();
 	}
-
-	
 
 }
